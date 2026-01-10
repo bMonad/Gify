@@ -13,7 +13,7 @@ const Tabs = () => {
         return (
           <button
             key={idx}
-            className={`font-medium uppercase cursor-pointer hover:text-[#f9b767] hover:scale-103 ease-in-out ${(activeTab === tab) ? 'text-[#f9b767] scale-103' : 'text-stone-400'} transition-all`}
+            className={`font-medium uppercase cursor-pointer hover:text-[#f9b767] ease-in ${(activeTab === tab) ? 'text-[#f9b767] scale-103' : 'text-stone-400'} transition-all`}
             onClick={() => {
               dispatch(setActiveTab(tab))
             }}>
