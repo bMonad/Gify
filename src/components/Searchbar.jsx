@@ -23,14 +23,14 @@ const Searchbar = () => {
     e.preventDefault();
     dispatch(setQuery(input));
     console.log("input: ", input);
-    setInput('')
-    setCross(false)
+    // setInput('')
+    // setCross(false)
 
   }
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className='mt-2 flex gap-5 justify-center '>
+      <form onSubmit={handleSubmit} className='mt-6 flex gap-5 justify-center '>
         <div className='flex w-[80%] border border-[#f9b767] rounded text-center px-2'>
           <input
             type='text'

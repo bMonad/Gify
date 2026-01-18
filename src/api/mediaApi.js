@@ -1,4 +1,5 @@
 import axios from 'axios'
+import SessionStorage from '../SessionStorage'
 
 const UNSPLASH_KEY = import.meta.env.VITE_UNSPLASH_KEY
 const PEXELS_KEY = import.meta.env.VITE_PEXELS_KEY
@@ -10,8 +11,18 @@ export async function fetchPhotos(query, page = 1, per_page = 20) {
     params: { query, page, per_page },
     headers: { Authorization: `Client-ID ${UNSPLASH_KEY}` }
   })
+  const data = {
+    results: res.data.results.map(photo => ({
+      id: photo.id,
+      type: 'photo',
+      thumbnail: photo.urls.small,
+      src: photo.urls.full,
+      title: photo.alt_description
+    }))
+  }
 
-  return res.data;
+  SessionStorage.setItem('photo', { query, data, timestamp: Date.now() });
+  return data;
 }
 
 
@@ -20,8 +31,20 @@ export async function fetchVideos(query, per_page = 20) {
     params: { query, per_page },
     headers: { Authorization: PEXELS_KEY }
   })
+  console.log(res);
 
-  return res.data
+  const data = {
+    results: res.data.videos.map(video => ({
+      id: video.id,
+      type: 'video',
+      thumbnail: video.image,
+      src: video.video_files[0].link,
+      title: video.user.name || 'Video'
+    }))
+  }
+
+  SessionStorage.setItem('video', { query, data, timestamp: Date.now() });
+  return data
 }
 
 export async function fetchGif(query, limit = 20) {
@@ -29,5 +52,16 @@ export async function fetchGif(query, limit = 20) {
     params: { q: query, key: TENOR_KEY, limit },
   })
 
-  return res.data
+  const data = {
+    results: res.data.results.map(gif => ({
+      id: gif.id,
+      type: 'gif',
+      thumbnail: gif.media_formats.tinymp4.url,
+      src: gif.media_formats.gif.url,
+      title: gif.content_description
+    }))
+  }
+
+  SessionStorage.setItem('gif', { query, data, timestamp: Date.now() });
+  return data
 } 
