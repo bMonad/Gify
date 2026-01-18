@@ -5,20 +5,20 @@ import { useCallback, useEffect } from "react";
 import ResultCard from "./ResultCard";
 import SessionStorage from "../SessionStorage";
 
+const tabKeyMap = {
+  photos: 'photo',
+  videos: 'video',
+  gifs: 'gif'
+};
+const fetchMap = {
+  photos: fetchPhotos,
+  videos: fetchVideos,
+  gifs: fetchGif
+};
+
 const ResultGrid = () => {
   const { query, activeTab, results, loading, error } = useSelector((store) => store.search);
   const dispatch = useDispatch();
-
-  const tabKeyMap = {
-    photos: 'photo',
-    videos: 'video',
-    gifs: 'gif'
-  };
-  const fetchMap = {
-    photos: fetchPhotos,
-    videos: fetchVideos,
-    gifs: fetchGif
-  };
 
   const getData = useCallback(async () => {
     if (!query) return;
