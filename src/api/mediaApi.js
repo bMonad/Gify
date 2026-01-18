@@ -17,7 +17,8 @@ export async function fetchPhotos(query, page = 1, per_page = 20) {
       type: 'photo',
       thumbnail: photo.urls.small,
       src: photo.urls.full,
-      title: photo.alt_description
+      title: photo.alt_description,
+      url: photo.links.html
     }))
   }
 
@@ -31,15 +32,14 @@ export async function fetchVideos(query, per_page = 20) {
     params: { query, per_page },
     headers: { Authorization: PEXELS_KEY }
   })
-  console.log(res);
-
   const data = {
     results: res.data.videos.map(video => ({
       id: video.id,
       type: 'video',
       thumbnail: video.image,
       src: video.video_files[0].link,
-      title: video.user.name || 'Video'
+      title: video.user.name || 'Video',
+      url: video.url
     }))
   }
 
@@ -51,14 +51,14 @@ export async function fetchGif(query, limit = 20) {
   const res = await axios.get('https://tenor.googleapis.com/v2/search', {
     params: { q: query, key: TENOR_KEY, limit },
   })
-
   const data = {
     results: res.data.results.map(gif => ({
       id: gif.id,
       type: 'gif',
       thumbnail: gif.media_formats.tinymp4.url,
       src: gif.media_formats.gif.url,
-      title: gif.content_description
+      title: gif.content_description,
+      url: gif.itemurl
     }))
   }
 
